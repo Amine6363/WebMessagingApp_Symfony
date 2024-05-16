@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messaging App{% endblock %}
+
+{% block stylesheets %}
+    {# Additional stylesheets specific to index.html.twig #}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffeac7;
+        }
+
+        .custom-image {
+            height: 500px;
+            width: 600px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold mb-4">Welcome to Our Messaging App</h1>
+            <img src="{{ asset('home.png') }}" alt="Welcome Image" class="max-w-full mb-8 rounded-md shadow-md custom-image">
+
+            <div class="flex flex-col items-center">
+                <a href="{{ path('app_login') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md mb-4 hover:bg-blue-600">Login</a>
+                <a href="{{ path('app_register') }}" class="bg-green-500 text-white px-4 py-2 rounded-md mb-4 hover:bg-green-600">Register</a>
+                <a href="{{ path('app_forgot_password_request') }}" class="text-blue-500 hover:underline">Forgot your password?</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

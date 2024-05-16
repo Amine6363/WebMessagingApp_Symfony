@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View Message{% endblock %}
+
+{% block stylesheets %}
+    {# Your existing stylesheets #}
+    <style>
+        /* Custom styles for the message view template */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sender-info {
+            display: flex;
+            align-items: center;
+        }
+        .sender-name {
+            margin-right: 10px;
+        }
+        .sender-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .attachment-image {
+            max-width: 300px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            margin-top: 10px;
+        }
+        .reply-form {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<h1> Inbox </h1>
+<div class="container">
+    {# Display flash messages if they exist #}
+    {% for flash_message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">{{ message.subject }}</h1>
+            <div class="sender-info">
+                <div>
+                    <strong>From:</strong>
+                    <span class="sender-name">{{ message.sender.username }}</span>
+                </div>
+                {% if message.sender.profilePictureFilename %}
+                    <img src="{{ asset('uploads/profile_pictures/' ~ message.sender.profilePictureFilename) }}" alt="Sender Avatar" class="sender-avatar">
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><strong>Content:</strong> {{ message.body }}</p>
+            {% if message.attachmentFilename %}
+                {% set attachmentPath = asset('uploads/attachments/' ~ message.attachmentFilename) %}
+                {% set imageExtensions = ['jpg', 'jpeg', 'png', 'gif'] %}
+                {% set attachmentExtension = message.attachmentFilename|split('.')|last|lower %}
+                {% if attachmentExtension in imageExtensions %}
+                    <img src="{{ attachmentPath }}" alt="Attachment Image" class="attachment-image">
+                {% else %}
+                    <a href="{{ attachmentPath }}" class="btn btn-primary" download>Download Attachment</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="reply-form">
+        <h2>Reply</h2>
+        <form method="post" action="{{ path('app_message_reply', {'id': message.id}) }}">
+            <div class="form-group">
+                <label for="reply_content">Reply Content:</label>
+                <textarea class="form-control" id="reply_content" name="reply_content" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Reply</button>
+        </form>
+    </div>
+
+    <a href="{{ path('app_profile') }}" class="btn btn-secondary back-to-profile-btn">Back to Profile</a>
+</div>
+{% endblock %}

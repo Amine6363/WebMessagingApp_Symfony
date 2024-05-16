@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Custom styles for the inbox template */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .unread-status {
+            font-weight: bold; /* Bold font for unread status */
+            color: #dc3545; /* Red color for unread status */
+        }
+
+        .read-status {
+            color: #28a745; /* Green color for read status */
+        }
+
+        .back-to-profile-btn {
+            margin-top: 20px;
+        }
+
+        .sender-profile-picture {
+            width: 30px; /* Set width for sender profile pictures */
+            height: 30px; /* Set height for sender profile pictures */
+            border-radius: 50%; /* Create a circular border for sender profile pictures */
+            margin-right: 5px; /* Add margin for spacing */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {# Display success flash message if it exists #}
+    {% for flash_message in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+
+    <h1>Inbox</h1>
+    
+    {% if receivedMessages is empty %}
+        <p>Your inbox is empty.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Date Sent</th>  {# New column for Date Sent #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in receivedMessages %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if message.getSender().getProfilePictureFilename() %}
+                                    <img class="sender-profile-picture" src="{{ asset('uploads/profile_pictures/' ~ message.getSender().getProfilePictureFilename()) }}" alt="Sender Profile Picture">
+                                {% else %}
+                                    <div class="sender-profile-picture bg-secondary"></div>
+                                {% endif %}
+                                {{ message.getSender().getUsername() }}
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_message_view', { 'id': message.getId() }) }}">
+                                {{ message.getSubject() }}
+                            </a>
+                        </td>
+                        <td class="{% if message.isViewed() %}read-status{% else %}unread-status{% endif %}">
+                            {{ message.isViewed() ? 'Read' : 'Unread' }}
+                        </td>
+                        <td>{{ message.getSentAt()|date('Y-m-d H:i:s') }}</td>  {# Display Date Sent using message's created_at property #}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <a href="{{ path('app_profile') }}" class="btn btn-secondary back-to-profile-btn">Back to Profile</a>
+</div>
+{% endblock %}

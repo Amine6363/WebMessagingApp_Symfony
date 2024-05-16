@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Outbox Message{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Custom styles for the outbox message template */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .message-image {
+            max-width: 100%; /* Ensure the image fits within its container */
+            height: auto; /* Maintain aspect ratio */
+            border: 1px solid #ddd; /* Optional: Add border for clarity */
+            border-radius: 5px; /* Optional: Add border radius for rounded corners */
+            margin-top: 10px; /* Add margin for spacing */
+        }
+
+        .btn-secondary {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Outbox Message</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Subject: {{ message.subject }}</h5>
+            <p class="card-text">{{ message.body }}</p>
+            
+            {% if message.attachmentFilename %}
+                {% set fileExtension = message.attachmentFilename|split('.')|last|lower %}
+                {% if fileExtension in ['jpg', 'jpeg', 'png', 'gif'] %}
+                    <img src="{{ asset('uploads/attachments/' ~ message.attachmentFilename) }}" class="message-image">
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ path('app_profile') }}" class="btn btn-secondary">Back to Profile</a>
+</div>
+{% endblock %}

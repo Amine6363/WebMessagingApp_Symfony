@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if user.getProfilePictureFilename() %}
+                        <img id="profile-picture" src="{{ asset('uploads/profile_pictures/' ~ user.getProfilePictureFilename()) }}" class="img-fluid mb-3" alt="Profile Picture">
+                    {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            No profile picture uploaded.
+                        </div>
+                    {% endif %}
+                    <h4 class="card-title">Hello {{ user.getUsername() }}!</h4>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <h5>Upload Profile Picture</h5>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" id="profile_picture" name="profile_picture" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Profile Actions</h2>
+                    <div class="list-group">
+                        <a href="{{ path('app_message') }}" class="list-group-item list-group-item-action list-group-item-info">Send a Message</a>
+                        <a href="{{ path('app_inbox') }}" class="list-group-item list-group-item-action list-group-item-success">Inbox</a>
+                        <a href="{{ path('app_outbox') }}" class="list-group-item list-group-item-action list-group-item-warning">Outbox</a>
+                        <a href="{{ path('app_logout') }}" class="list-group-item list-group-item-action list-group-item-danger">Logout</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_admin') }}" class="list-group-item list-group-item-action list-group-item-primary">Admin Dashboard</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

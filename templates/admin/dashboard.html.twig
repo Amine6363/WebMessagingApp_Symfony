@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.blocked %}
+                                <span class="badge badge-danger">Blocked</span>
+                            {% else %}
+                                <span class="badge badge-success">Active</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.blocked %}
+                                <a href="{{ path('admin_unblock_user', {'id': user.id}) }}" class="btn btn-sm btn-primary">Unblock</a>
+                            {% else %}
+                                <a href="{{ path('admin_block_user', {'id': user.id}) }}" class="btn btn-sm btn-danger">Block</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        <a href="{{ path('app_profile') }}" class="btn btn-secondary">Back to Profile</a>
+
+</div>
+{% endblock %}

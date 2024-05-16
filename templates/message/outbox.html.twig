@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Outbox{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Custom styles for the outbox template */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .recipient-profile-picture {
+            width: 30px; /* Set width for recipient profile pictures */
+            height: 30px; /* Set height for recipient profile pictures */
+            border-radius: 50%; /* Create a circular border for recipient profile pictures */
+            margin-right: 5px; /* Add margin for spacing */
+        }
+
+        .current-user-profile-picture {
+            max-width: 300px; /* Set maximum width for current user's profile picture */
+            max-height: 300px; /* Set maximum height for current user's profile picture */
+            border: 1px solid #ccc; /* Optional: Add border for clarity */
+            border-radius: 5px; /* Optional: Add border radius for rounded corners */
+            margin-bottom: 20px; /* Add margin for spacing */
+        }
+
+        .message-image {
+            max-width: 100%; /* Ensure the image fits within its container */
+            height: auto; /* Maintain aspect ratio */
+            border: 1px solid #ddd; /* Optional: Add border for clarity */
+            border-radius: 5px; /* Optional: Add border radius for rounded corners */
+            margin-top: 10px; /* Add margin for spacing */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <h1>Outbox</h1>
+
+            {% if user.getProfilePictureFilename() %}
+                <img class="current-user-profile-picture img-fluid rounded mb-4" src="{{ asset('uploads/profile_pictures/' ~ user.getProfilePictureFilename()) }}" alt="Profile Picture">
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    No profile picture uploaded.
+                </div>
+            {% endif %}
+
+            <a href="{{ path('app_profile') }}" class="btn btn-secondary mt-3 d-block">Back to Profile</a>
+        </div>
+        <div class="col-md-8">
+            {% if sentMessages is empty %}
+                <p>No messages sent yet.</p>
+            {% else %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Recipients</th>
+                            <th>Subject</th>
+                            <th>Sent At</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in sentMessages|sort((a, b) => a.sentAt <=> b.sentAt) %}
+                            <tr>
+                                <td>
+                                    {% for recipient in message.recipients %}
+                                        <div class="d-flex align-items-center">
+                                            <img class="recipient-profile-picture" src="{{ asset('uploads/profile_pictures/' ~ recipient.profilePictureFilename) }}" alt="Recipient Profile Picture">
+                                            <span>{{ recipient.username }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_message_show', { 'id': message.getId() }) }}">
+                                        {{ message.subject }}
+                                    </a>
+                                </td>
+                                <td>{{ message.sentAt ? message.sentAt|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                                <td>
+                                    {% if message.viewed %}
+                                        <span class="text-success font-weight-bold">Read</span>
+                                    {% else %}
+                                        <span class="text-danger font-weight-bold">Unread</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Custom styles for the password reset form */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .reset-password-form {
+            max-width: 400px;
+            margin: 100px auto; /* Adjust top margin for positioning */
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .reset-password-form h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .reset-password-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .reset-password-form label {
+            font-weight: bold;
+        }
+
+        .reset-password-form small {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .reset-password-form .btn {
+            width: 100%;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="reset-password-form">
+        {% for flash_error in app.flashes('reset_password_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+        <h1>Reset your password</h1>
+
+        {{ form_start(requestForm) }}
+            <div class="form-group">
+                {{ form_row(requestForm.email, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your email'} }) }}
+            </div>
+            <div>
+                <small>
+                    Enter your email address, and we will send you a link to reset your password.
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send password reset email</button>
+        {{ form_end(requestForm) }}
+    </div>
+</div>
+{% endblock %}
