@@ -63,5 +63,5 @@ php bin/console doctrine:migrations:migrate
 
 📄 PDF Documentation
 For detailed documentation, including setup instructions, user guide, and more, please refer to the PDF available in the repository:
-[📥 Click to view Documentation](https://raw.githubusercontent.com/yourusername/messaging-app/main/documentation.pdf)
+[📥 Click to view Documentation](https://github.com/Amine6363/WebMessagingApp_Symfony/blob/9c6d8c3f776d8e76ab2f52209eb0ab2cbb474965/Second%20Term%20Project%20-%20Messaging%20Application%20Symfon%20ea9ab35c0d5145b28b075e52e7f856f8.pdf)
 
