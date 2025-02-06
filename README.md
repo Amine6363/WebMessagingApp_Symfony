@@ -1,4 +1,4 @@
-# 📧 Messaging App
+# 📧 Messaging App (Symfony Version)
 
 A messaging app similar to email, built with Symfony, Bootstrap, and MySQL. This application allows users to send and receive messages with attachments, manage their profiles, and more. Administrators can block/unblock users and manage content from the admin panel.
 
@@ -63,3 +63,5 @@ php bin/console doctrine:migrations:migrate
 
 📄 PDF Documentation
 For detailed documentation, including setup instructions, user guide, and more, please refer to the PDF available in the repository:
+[📥 Click to view Documentation](https://raw.githubusercontent.com/yourusername/messaging-app/main/documentation.pdf)
+
